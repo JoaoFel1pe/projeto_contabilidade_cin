@@ -4,17 +4,17 @@ Este projeto é uma atividade acadêmica desenvolvida por uma equipe de alunos d
 
 ## Funcionalidades
 Funções Orçamentárias:
-  - 06. SEGURANÇA PÚBLICA
-  - 08. ASSISTÊNCIA SOCIAL 
-  - 09. PREVIDÊNCIA SOCIAL
-  - 10. SAÚDE
+  - 06 SEGURANÇA PÚBLICA
+  - 08 ASSISTÊNCIA SOCIAL 
+  - 09 PREVIDÊNCIA SOCIAL
+  - 10 SAÚDE
     - Subfunção: 10.301 - Atenção Básica 
     - 10.302 - Assistência Hospitalar e Ambulatorial
     - 10.303 - Suporte Profilático e Terapêutico
     - 10.304 - Vigilância Sanitária
     - 10.305 - Vigilância Epidemiológica
     - 10.306 - Alimentação e Nutrição.
-  - 12. EDUCAÇÃO
+  - 12 EDUCAÇÃO
   
 O algoritmo desenvolvido neste projeto será capaz de extrair as seguintes informações para cada função orçamentária:
 
