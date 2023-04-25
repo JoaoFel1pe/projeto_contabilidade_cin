@@ -44,7 +44,7 @@ git clone https://github.com/JoaoFel1pe/projeto_contabilidade_cin.git
 2. Instale as dependências do projeto utilizando o gerenciador de pacotes pip:
 
 ```bash
-pip install requirements.txg
+pip install requirements.txt
 ```
 
 3. Execute o arquivo principal do projeto:
