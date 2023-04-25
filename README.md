@@ -3,7 +3,19 @@
 Este projeto é uma atividade acadêmica desenvolvida por uma equipe de alunos da disciplina de Contabilidade de Custos e Gerencial, do curso de Sistemas de Informação da UFPE. O objetivo é desenvolver um algoritmo capaz de extrair dados financeiros de municípios e estados da federação do arquivo "FINBRA_Municípios_Despesas por Função_2019.xlsx", gerando relatórios específicos para cada função orçamentária.
 
 ## Funcionalidades
-
+Funções Orçamentárias:
+  - 06. SEGURANÇA PÚBLICA
+  - 08. ASSISTÊNCIA SOCIAL 
+  - 09. PREVIDÊNCIA SOCIAL
+  - 10. SAÚDE
+    - Subfunção: 10.301 - Atenção Básica 
+    - 10.302 - Assistência Hospitalar e Ambulatorial
+    - 10.303 - Suporte Profilático e Terapêutico
+    - 10.304 - Vigilância Sanitária
+    - 10.305 - Vigilância Epidemiológica
+    - 10.306 - Alimentação e Nutrição.
+  - 12. EDUCAÇÃO
+  
 O algoritmo desenvolvido neste projeto será capaz de extrair as seguintes informações para cada função orçamentária:
 
 - Despesas Empenhadas
@@ -26,53 +38,29 @@ O projeto será desenvolvido em Python, utilizando as seguintes bibliotecas:
 1. Clone este repositório em sua máquina local:
 
 ```bash
-git clone https://github.com/seunome/seuprojeto.git
+git clone https://github.com/JoaoFel1pe/projeto_contabilidade_cin.git
 ```
 
 2. Instale as dependências do projeto utilizando o gerenciador de pacotes pip:
 
 ```bash
-pip install pandas reportlab
+pip install requirements.txg
 ```
 
 3. Execute o arquivo principal do projeto:
 
 ```bash
-python main.py
+python src/main.py
 ```
-
-4. Siga as instruções exibidas no terminal para escolher a função orçamentária desejada e gerar o relatório correspondente.
 
 ## Contribuição
 
-Contribuições para o desenvolvimento deste projeto são sempre bem-vindas! Para contribuir, siga as instruções abaixo:
-
-1. Faça um fork deste repositório
-2. Crie uma nova branch com suas alterações:
-
-```bash
-git checkout -b minha-feature
-```
-
-3. Faça o commit das suas alterações:
-
-```bash
-git commit -m 'Adicionando uma nova feature'
-```
-
-4. Faça o push para a sua branch:
-
-```bash
-git push origin minha-feature
-```
-
-5. Abra um pull request para este repositório
+Para fazer alterações nesse projeto, faça o commit e então dê o push direto na branch main
 
 ## Autores
 
-- João Silva (joaosilva@email.com)
-- Maria Santos (mariasantos@email.com)
-- José Oliveira (joseoliveira@email.com)
+- João Felipe (jfbs@cin.ufpe.br)
+- 
 
 ## Licença
 
