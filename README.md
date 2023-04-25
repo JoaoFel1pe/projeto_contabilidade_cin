@@ -60,7 +60,11 @@ python src/main.py
 
 ## Contribuição
 
-Para fazer alterações nesse projeto, faça o commit e então dê o push direto na branch main
+Para fazer alterações nesse projeto, faça o commit falando quais foram as alterações feitas e então dê o push direto na branch main
+
+```bash
+git push origin main
+```
 
 ## Autores
 
