@@ -53,6 +53,11 @@ pip install requirements.txt
 python src/main.py
 ```
 
+4. Serão utilizadas 3 pastas para esse projeto:
+- src: onde o código principal e os demais estarão alocados
+- data: onde ficará o arquivo excel a ser lido, permitindo a reutilização desse algoritmo com outras planilhas
+- reports: onde serão armazenados os relatórios gerados
+
 ## Contribuição
 
 Para fazer alterações nesse projeto, faça o commit e então dê o push direto na branch main
