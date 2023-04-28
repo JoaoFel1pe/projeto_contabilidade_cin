@@ -69,7 +69,10 @@ git push origin main
 ## Autores
 
 - João Felipe (jfbs@cin.ufpe.br)
-- 
+- Angel Lima (awrl@cin.ufpe.br)
+- Diego França (drgf@cin.ufpe.br)
+- Gabriel Sousa (gmcs@cin.ufpe.br)
+- José Gervásio (jgbcn@cin.ufpe.br)
 
 ## Licença
 
