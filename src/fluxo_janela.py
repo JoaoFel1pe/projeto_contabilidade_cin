@@ -1,23 +1,48 @@
 import os
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 import pandas as pd
+
+from filtros import CONTAS, Filtros
 
 
 class Reports:
     # Inicializa a classe, configurando a janela principal da interface.
     def __init__(self, master):
+        self.filtros = Filtros()
+
         self.master = master
         self.master.title("Relatórios")
-        self.master.geometry("400x300")
+        self.master.geometry("300x300")
 
         self.frame_menu = tk.Frame(self.master)
-        self.frame_estado = tk.Frame(self.master)
-        self.frame_municipio = tk.Frame(self.master)
+        self.frame_uf = tk.Frame(self.master)
+        self.frame_conta_uf = tk.Frame(self.master)
         self.frame_reports = tk.Frame(self.master)
 
         self.criar_menu()
+
+    def botoes_enviar_voltar(self, frame, entrada):
+        def enviar(l):
+            botao_enviar = tk.Button(
+                frame,
+                text="Enviar",
+                command=l,
+            )
+            botao_enviar.pack()
+
+        def voltar():
+            botao_voltar = tk.Button(frame, text="Voltar", command=self.voltar_menu)
+            botao_voltar.pack()
+
+        if frame == self.frame_uf:
+            filtro = self.filtros.filtrar_uf
+            l = lambda: filtro(self.tratar_uf(entrada.get()))
+            enviar(l)
+            voltar()
+        else:
+            voltar()
 
     # Cria um menu de opções para o usuário escolher o tipo de filtro que deseja aplicar aos dados.
     def criar_menu(self):
@@ -28,17 +53,15 @@ class Reports:
         rotulo = tk.Label(self.frame_menu, text="Escolha o tipo de filtro:")
         rotulo.pack()
 
-        botao_estado = tk.Button(
-            self.frame_menu, text="Filtrar por Estado", command=self.criar_janela_estado
+        botao_uf = tk.Button(
+            self.frame_menu, text="Filtrar por UF", command=self.criar_janela_uf
         )
-        botao_estado.pack()
+        botao_uf.pack()
 
-        botao_municipio = tk.Button(
-            self.frame_menu,
-            text="Filtrar por Município",
-            command=self.criar_janela_municipio,
+        botao_conta_uf = tk.Button(
+            self.frame_menu, text="Filtrar por Conta", command=self.criar_janela_conta_uf
         )
-        botao_municipio.pack()
+        botao_conta_uf.pack()
 
         botao_reports = tk.Button(
             self.frame_menu,
@@ -47,68 +70,41 @@ class Reports:
         )
         botao_reports.pack()
 
-    # Cria uma nova janela para que o usuário possa digitar a UF (Unidade Federativa) do estado que deseja filtrar. Quando o botão "Enviar" é clicado, a função filtrar_estado é chamada.
-    def criar_janela_estado(self):
-        self.frame_estado = tk.Frame(self.master)
+    # Cria uma nova janela para que o usuário possa digitar a UF (Unidade Federativa) do uf que deseja filtrar. Quando o botão "Enviar" é clicado, a função filtrar_uf é chamada.
+    def criar_janela_uf(self):
+        self.frame_uf = tk.Frame(self.master)
         self.frame_menu.pack_forget()
-        self.frame_estado.pack()
+        self.frame_uf.pack()
 
-        rotulo = tk.Label(self.frame_estado, text="Digite o UF desejado:")
+        rotulo = tk.Label(self.frame_uf, text="Digite a UF desejada:")
         rotulo.pack()
 
-        entrada = tk.Entry(self.frame_estado)
+        entrada = tk.Entry(self.frame_uf)
         entrada.pack()
 
-        botao_enviar = tk.Button(
-            self.frame_estado,
-            text="Enviar",
-            command=lambda: self.filtrar_estado(entrada.get()),
-        )
-        botao_enviar.pack()
+        self.botoes_enviar_voltar(self.frame_uf, entrada)
 
-        botao_voltar = tk.Button(
-            self.frame_estado, text="Voltar", command=self.voltar_menu
-        )
-        botao_voltar.pack()
-
-    # Cria uma nova janela para que o usuário possa digitar o nome do município e a UF (Unidade Federativa) do município que deseja filtrar. Quando o botão "Enviar" é clicado, a função filtrar_municipio é chamada.
-    def criar_janela_municipio(self):
-        self.frame_municipio = tk.Frame(self.master)
+    # Cria uma nova janela para o usuário filtrar a CONTA que ele deseja com base numa UF
+    def criar_janela_conta_uf(self):
+        self.frame_conta_uf = tk.Frame(self.master)
         self.frame_menu.pack_forget()
-        self.frame_municipio.pack()
+        self.frame_conta_uf.pack()
 
-        rotulo = tk.Label(
-            self.frame_municipio,
-            text="Digite o Município desejado no seguinte formato:",
-        )
+        rotulo = tk.Label(self.frame_conta_uf, text="Digite a UF desejada e o tipo de conta a ser filtrado:")
         rotulo.pack()
 
-        rotulo2 = tk.Label(
-            self.frame_municipio, text="nome do município - UF do município"
-        )
-        rotulo2.pack()
-
-        rotulo3 = tk.Label(
-            self.frame_municipio,
-            text="Exemplo: Recife - PE      ou      Belo Horizonte - MG",
-        )
-        rotulo3.pack()
-
-        entrada = tk.Entry(self.frame_municipio)
+        entrada = tk.Entry(self.frame_conta_uf)
         entrada.pack()
 
-        botao_enviar = tk.Button(
-            self.frame_municipio,
-            text="Enviar",
-            command=lambda: self.filtrar_municipio(entrada.get()),
-        )
-        botao_enviar.pack()
+        self.opcao_conta = tk.StringVar()
+        combobox = ttk.Combobox(self.frame_conta_uf, textvariable=self.opcao_conta, values=["Selecione uma opção"] + CONTAS, state="readonly")
+        combobox.pack()
 
-        botao_voltar = tk.Button(
-            self.frame_municipio, text="Voltar", command=self.voltar_menu
-        )
-        botao_voltar.pack()
+        botao = tk.Button(self.frame_conta_uf, text="Filtrar", command=lambda: print(entrada.get(), self.opcao_conta.get()))
+        botao.pack()
+        
 
+    # Cria uma interface gráfica que permite ao usuário visualizar e abrir relatórios disponíveis
     def criar_janela_reports(self):
         self.frame_reports = tk.Frame(self.master)
         self.frame_menu.pack_forget()
@@ -119,7 +115,6 @@ class Reports:
 
         # Obtem a lista de arquivos na pasta "reports"
         arquivos_ufs = os.listdir("reports/ufs")
-        arquivos_municipios = os.listdir("reports/municipios")
 
         # Cria um widget ListBox para exibir os nomes dos arquivos
         lista_arquivos = tk.Listbox(self.frame_reports, width=50)
@@ -127,18 +122,12 @@ class Reports:
 
         # Adiciona cada arquivo à lista
         for arquivo in arquivos_ufs:
-            lista_arquivos.insert(tk.END, "UF - " + arquivo.split("_")[1])
-
-        for arquivo in arquivos_municipios:
-            lista_arquivos.insert(tk.END, "MUNICÍPIO - " + arquivo.split("_")[1])
+            lista_arquivos.insert(tk.END, "UF -> " + arquivo.split("_")[1])
 
         # Adiciona um evento de clique na lista de arquivos
         lista_arquivos.bind("<Double-Button-1>", self.abrir_arquivo_excel)
 
-        botao_voltar = tk.Button(
-            self.frame_reports, text="Voltar", command=self.voltar_menu
-        )
-        botao_voltar.pack()
+        self.botoes_enviar_voltar(frame=self.frame_reports, entrada=None)
 
     def abrir_arquivo_excel(self, event):
         widget = event.widget
@@ -148,63 +137,18 @@ class Reports:
         if selection:
             arquivo = widget.get(selection[0])
             if "UF" in arquivo:
-                caminho = f"{working_dir}/reports/ufs/dados_{arquivo.split(' - ')[1]}_filtrados.xlsx"
-            else:
-                caminho = f"{working_dir}/reports/municipios/dados_{arquivo.split(' - ')[1]}_filtrados.xlsx"
+                caminho = f"{working_dir}/reports/ufs/dados_{arquivo.split(' -> ')[1]}_filtrados.xlsx"
             os.startfile(caminho)
 
     # Retorna para o menu principal da interface, destruindo as janelas secundárias que estiverem abertas.
     def voltar_menu(self):
-        self.frame_estado.pack_forget()
-        self.frame_municipio.pack_forget()
+        self.frame_uf.pack_forget()
         self.frame_reports.pack_forget()
         self.criar_menu()
 
-    # Recebe uma string que representa a UF (Unidade Federativa) de um estado e a retorna em maiúsculo, sem espaços em branco no início ou no final.
+    # Recebe uma string que representa a UF (Unidade Federativa) de um uf e a retorna em maiúsculo, sem espaços em branco no início ou no final.
     def tratar_uf(self, UF):
         return UF.upper().strip()
-
-    # Recebe uma string que representa o nome e a UF (Unidade Federativa) de um município e a retorna com o nome em título e a UF em maiúsculo.
-    def tratar_municipio(self, municipio):
-        return municipio.strip().upper()
-
-    # Recebe uma string que representa a UF (Unidade Federativa) de um estado e filtra os dados do arquivo Excel para incluir apenas as linhas que correspondem a esse estado. Se não houver dados para esse estado, uma mensagem de erro é exibida.
-    def filtrar_estado(self, UF):
-        UF = self.tratar_uf(UF)
-        df = pd.read_excel("data\dataframe_tratado.xlsx")
-        df_filtrado = df.loc[df["UF"] == UF]
-        if df_filtrado.empty:
-            messagebox.showinfo(
-                "Erro",
-                "Ocorreu um erro na sua requisição. Ou o você não passou o UF de forma adequada, ou esse UF não existe",
-            )
-        else:
-            df_filtrado.to_excel(rf"reports\ufs\dados_{UF}_filtrados.xlsx", index=False)
-            messagebox.showinfo(
-                "SUCESSO",
-                "Sua requisição foi realizada com sucesso. Cheque o diretório destinado aos relatórios",
-            )
-
-    # Recebe uma string que representa o nome e a UF (Unidade Federativa) de um município e filtra os dados do arquivo Excel para incluir apenas as linhas que correspondem a esse município. Se não houver dados para esse município, uma mensagem de erro é exibida. Caso contrário, uma nova janela é aberta para exibir os dados filtrados.
-    def filtrar_municipio(self, municipio):
-        municipio = self.tratar_municipio(municipio)
-        df = pd.read_excel("data\dataframe_tratado.xlsx")
-        df_filtrado = df.loc[
-            df["INSTITUIÇÃO"] == "PREFEITURA MUNICIPAL DE " + municipio
-        ]
-        if df_filtrado.empty:
-            messagebox.showinfo(
-                "Erro",
-                "Ocorreu um erro na sua requisição. Ou o você não passou o município de forma adequada, ou esse município não existe",
-            )
-        else:
-            df_filtrado.to_excel(
-                f"reports\municipios\dados_{municipio}_filtrados.xlsx", index=False
-            )
-            messagebox.showinfo(
-                "SUCESSO",
-                "Sua requisição foi realizada com sucesso. Cheque o diretório destinado aos relatórios",
-            )
 
 
 def rodar_janelas():
@@ -212,3 +156,7 @@ def rodar_janelas():
     app = Reports(root)
     app.criar_menu()
     root.mainloop()
+
+
+if __name__ == "__main__":
+    rodar_janelas()
