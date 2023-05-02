@@ -4,7 +4,7 @@ from tkinter import messagebox, ttk
 
 import pandas as pd
 
-from filtros import CONTAS, Filtros
+from filtros import COLUNAS, Filtros
 
 
 class Reports:
@@ -97,7 +97,7 @@ class Reports:
         entrada.pack()
 
         self.opcao_conta = tk.StringVar()
-        combobox = ttk.Combobox(self.frame_conta_uf, textvariable=self.opcao_conta, values=["Selecione uma opção"] + CONTAS, state="readonly")
+        combobox = ttk.Combobox(self.frame_conta_uf, textvariable=self.opcao_conta, values=["Selecione uma opção"] + COLUNAS[1:-1], state="readonly")
         combobox.pack()
 
         botao = tk.Button(self.frame_conta_uf, text="Filtrar", command=lambda: print(entrada.get(), self.opcao_conta.get()))
