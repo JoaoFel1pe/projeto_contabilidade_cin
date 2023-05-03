@@ -39,7 +39,7 @@ Primeiramente, instale o Git e o Python 3.9 no seu computador
 - git: https://git-scm.com/download/
 - Python: https://www.python.org/downloads/release/python-390/
 
-1. Clone este repositório em sua máquina local:
+1. Abra o terminal do seu Sistema Operacional numa pasta vazia e clone este repositório em sua máquina local através do seguinte comando:
 
 ```bash
 git clone https://github.com/JoaoFel1pe/projeto_contabilidade_cin.git
