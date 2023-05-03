@@ -34,6 +34,10 @@ O projeto será desenvolvido em Python. Para rodá-lo, instale o python e as seg
 
 ## Instalação e Uso
 
+Primeiramente, instale o Git e o Python 3.9 no seu computador
+git: https://git-scm.com/download/
+Python: https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe
+
 1. Clone este repositório em sua máquina local:
 
 ```bash
