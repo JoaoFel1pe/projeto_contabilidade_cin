@@ -2,6 +2,8 @@
 
 Este projeto é uma atividade acadêmica desenvolvida por uma equipe de alunos da disciplina de Contabilidade de Custos e Gerencial, do curso de Sistemas de Informação da UFPE. O objetivo é desenvolver um algoritmo capaz de extrair dados financeiros de municípios e estados da federação do arquivo "FINBRA_Municípios_Despesas por Função_2019.xlsx", gerando relatórios específicos para cada função orçamentária.
 
+Um tutorial passo-a-passo foi adicionado a esse projeto. Você pode baixá-lo para ver como rodar o projeto
+
 ## Funcionalidades
 Funções Orçamentárias:
   - 06 SEGURANÇA PÚBLICA
