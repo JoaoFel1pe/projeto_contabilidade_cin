@@ -4,7 +4,7 @@ from tkinter import messagebox, ttk
 
 import pandas as pd
 
-from filtros import COLUNAS, Filtros
+from filtros import CONTAS, Filtros
 
 
 class Reports:
@@ -41,6 +41,7 @@ class Reports:
             l = lambda: filtro(self.tratar_uf(entrada.get()))
             enviar(l)
             voltar()
+
         else:
             voltar()
 
@@ -59,7 +60,9 @@ class Reports:
         botao_uf.pack()
 
         botao_conta_uf = tk.Button(
-            self.frame_menu, text="Filtrar por Conta", command=self.criar_janela_conta_uf
+            self.frame_menu,
+            text="Filtrar por Conta",
+            command=self.criar_janela_conta_uf,
         )
         botao_conta_uf.pack()
 
@@ -90,19 +93,37 @@ class Reports:
         self.frame_menu.pack_forget()
         self.frame_conta_uf.pack()
 
-        rotulo = tk.Label(self.frame_conta_uf, text="Digite a UF desejada e o tipo de conta a ser filtrado:")
+        rotulo = tk.Label(
+            self.frame_conta_uf,
+            text="Digite a UF desejada e o tipo de conta a ser filtrado:",
+        )
         rotulo.pack()
 
         entrada = tk.Entry(self.frame_conta_uf)
         entrada.pack()
 
         self.opcao_conta = tk.StringVar()
-        combobox = ttk.Combobox(self.frame_conta_uf, textvariable=self.opcao_conta, values=["Selecione uma opção"] + COLUNAS[1:-1], state="readonly")
+        combobox = ttk.Combobox(
+            self.frame_conta_uf,
+            textvariable=self.opcao_conta,
+            values=["Selecione uma opção"] + CONTAS,
+            state="readonly",
+        )
         combobox.pack()
 
-        botao = tk.Button(self.frame_conta_uf, text="Filtrar", command=lambda: print(entrada.get(), self.opcao_conta.get()))
+        botao = tk.Button(
+            self.frame_conta_uf,
+            text="Filtrar",
+            command=lambda: self.filtros.filtrar_conta_uf(
+                entrada.get(), self.opcao_conta.get()
+            ),
+        )
         botao.pack()
-        
+
+        botao_voltar = tk.Button(
+            self.frame_conta_uf, text="Voltar", command=self.voltar_menu
+        )
+        botao_voltar.pack()
 
     # Cria uma interface gráfica que permite ao usuário visualizar e abrir relatórios disponíveis
     def criar_janela_reports(self):
@@ -115,6 +136,7 @@ class Reports:
 
         # Obtem a lista de arquivos na pasta "reports"
         arquivos_ufs = os.listdir("reports/ufs")
+        arquivos_contas = os.listdir("reports/contas")
 
         # Cria um widget ListBox para exibir os nomes dos arquivos
         lista_arquivos = tk.Listbox(self.frame_reports, width=50)
@@ -123,6 +145,9 @@ class Reports:
         # Adiciona cada arquivo à lista
         for arquivo in arquivos_ufs:
             lista_arquivos.insert(tk.END, "UF -> " + arquivo.split("_")[1])
+
+        for arquivo in arquivos_contas:
+            lista_arquivos.insert(tk.END, "CONTA -> " + arquivo.split("_")[1])
 
         # Adiciona um evento de clique na lista de arquivos
         lista_arquivos.bind("<Double-Button-1>", self.abrir_arquivo_excel)
@@ -135,14 +160,18 @@ class Reports:
         working_dir = os.getcwd()
 
         if selection:
+            caminho = ""
             arquivo = widget.get(selection[0])
             if "UF" in arquivo:
                 caminho = f"{working_dir}/reports/ufs/dados_{arquivo.split(' -> ')[1]}_filtrados.xlsx"
+            else:
+                caminho = f"{working_dir}/reports/contas/dados_{arquivo.split(' -> ')[1]}_filtrados.xlsx"
             os.startfile(caminho)
 
     # Retorna para o menu principal da interface, destruindo as janelas secundárias que estiverem abertas.
     def voltar_menu(self):
         self.frame_uf.pack_forget()
+        self.frame_conta_uf.pack_forget()
         self.frame_reports.pack_forget()
         self.criar_menu()
 

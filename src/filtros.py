@@ -4,6 +4,7 @@ import pandas as pd
 
 from funcoes import *
 
+
 class Filtros:
     def __init__(self) -> None:
         pass
@@ -26,4 +27,19 @@ class Filtros:
 
     # Recebe uma string que representa o nome e a UF (Unidade Federativa) de uma conta e filtra os tipos de despesas daquela conta por cada municipio do estado
     def filtrar_conta_uf(self, UF, conta):
-        pass
+        df = criar_dataframe_por_conta(UF, conta)
+
+        if df.empty:
+            messagebox.showinfo(
+                "Erro",
+                "Ocorreu um erro na sua requisição. Ou o você não passou o UF de forma adequada, ou esse UF não existe",
+            )
+        else:
+            df.to_excel(
+                rf"reports\contas\dados_{conta.split(' - ')[1]}-{UF}_filtrados.xlsx",
+                index=True,
+            )
+            messagebox.showinfo(
+                "SUCESSO",
+                "Sua requisição foi realizada com sucesso. Cheque o diretório destinado aos relatórios",
+            )
