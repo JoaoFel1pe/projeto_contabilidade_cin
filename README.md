@@ -24,14 +24,13 @@ O algoritmo desenvolvido neste projeto será capaz de extrair as seguintes infor
 - Restos a Pagar Não Processados
 - Restos a Pagar Processados
 
-As informações serão apresentadas por município e estado da federação, permitindo uma análise detalhada dos gastos públicos em cada região.
+As informações serão apresentadas por estado da federação somente ou por estado e função orçamentária, permitindo uma análise detalhada dos gastos públicos em cada região.
 
 ## Tecnologias Utilizadas
 
-O projeto será desenvolvido em Python, utilizando as seguintes bibliotecas:
+O projeto será desenvolvido em Python. Para rodá-lo, instale o python e as seguintes bibliotecas:
 
 - pandas: para a leitura e manipulação do arquivo "FINBRA_Municípios_Despesas por Função_2019.xlsx"
-- reportlab: para a geração de relatórios em PDF
 
 ## Instalação e Uso
 
