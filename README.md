@@ -2,6 +2,8 @@
 
 Este projeto é uma atividade acadêmica desenvolvida por uma equipe de alunos da disciplina de Contabilidade de Custos e Gerencial, do curso de Sistemas de Informação da UFPE. O objetivo é desenvolver um algoritmo capaz de extrair dados financeiros de municípios e estados da federação do arquivo "FINBRA_Municípios_Despesas por Função_2019.xlsx", gerando relatórios específicos para cada função orçamentária.
 
+Um tutorial passo-a-passo foi adicionado a esse projeto. Você pode baixá-lo para ver como rodar o projeto
+
 ## Funcionalidades
 Funções Orçamentárias:
   - 06 SEGURANÇA PÚBLICA
@@ -34,7 +36,12 @@ O projeto será desenvolvido em Python. Para rodá-lo, instale o python e as seg
 
 ## Instalação e Uso
 
-1. Clone este repositório em sua máquina local:
+Primeiramente, instale o Git e o Python 3.9 no seu computador
+
+- git: https://git-scm.com/download/
+- Python: https://www.python.org/downloads/release/python-390/
+
+1. Abra o terminal do seu Sistema Operacional numa pasta vazia e clone este repositório em sua máquina local através do seguinte comando:
 
 ```bash
 git clone https://github.com/JoaoFel1pe/projeto_contabilidade_cin.git
@@ -43,7 +50,7 @@ git clone https://github.com/JoaoFel1pe/projeto_contabilidade_cin.git
 2. Instale as dependências do projeto utilizando o gerenciador de pacotes pip:
 
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 3. Execute o arquivo principal do projeto:
