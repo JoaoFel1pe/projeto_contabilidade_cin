@@ -18,11 +18,7 @@ class Reports:
 
         self.frame_menu = tk.Frame(self.master, bg="#082130")
         self.frame_uf = tk.Frame(self.master, bg="#082130")
-<<<<<<< HEAD
         self.frame_municipio = tk.Frame(self.master, bg="#082130")
-=======
-        self.frame_conta_uf = tk.Frame(self.master, bg="#082130")
->>>>>>> fdae265cdae596252f3579b61424d4bd78e623dc
         self.frame_reports = tk.Frame(self.master, bg="#082130")
 
         self.style = ttk.Style()
@@ -74,21 +70,12 @@ class Reports:
         )
         botao_uf.pack()
 
-<<<<<<< HEAD
         botao_municipio = ttk.Button(
             self.frame_menu,
             text="Filtrar por Conta",
             command=self.criar_janela_municipio,
         style='Botao.TButton')
         botao_municipio.pack()
-=======
-        botao_conta_uf = ttk.Button(
-            self.frame_menu,
-            text="Filtrar por Conta",
-            command=self.criar_janela_conta_uf,
-        style='Botao.TButton')
-        botao_conta_uf.pack()
->>>>>>> fdae265cdae596252f3579b61424d4bd78e623dc
 
         botao_reports = ttk.Button(
             self.frame_menu,
@@ -112,18 +99,12 @@ class Reports:
         self.botoes_enviar_voltar(self.frame_uf, entrada)
 
     # Cria uma nova janela para o usuário filtrar a CONTA que ele deseja com base numa UF
-<<<<<<< HEAD
     def criar_janela_municipio(self):
         self.frame_municipio = tk.Frame(self.master, bg="#082130")
-=======
-    def criar_janela_conta_uf(self):
-        self.frame_conta_uf = tk.Frame(self.master, bg="#082130")
->>>>>>> fdae265cdae596252f3579b61424d4bd78e623dc
         self.frame_menu.pack_forget()
         self.frame_municipio.pack()
 
         rotulo = ttk.Label(
-<<<<<<< HEAD
             self.frame_municipio,
             text="Digite o município a ser filtrado:",style='Rotulo.TLabel'
         )
@@ -133,36 +114,6 @@ class Reports:
         entrada.pack()
 
         self.botoes_enviar_voltar(self.frame_municipio, entrada)
-=======
-            self.frame_conta_uf,
-            text="Digite a UF desejada e o tipo de conta a ser filtrado:",style='Rotulo.TLabel'
-        )
-        rotulo.pack()
-
-        entrada = ttk.Entry(self.frame_conta_uf, style="Entrada.TEntry", background="#082130")
-        entrada.pack()
-
-        self.opcao_conta = tk.StringVar()
-        combobox = ttk.Combobox(
-            self.frame_conta_uf,
-            textvariable=self.opcao_conta,
-            values=["Selecione uma opção"] + CONTAS,
-            state="readonly",
-            style='Opcao.TCombobox'
-        )
-        combobox.pack()
-
-        botao = ttk.Button(
-            self.frame_conta_uf,
-            text="Filtrar",
-            command=lambda: self.filtros.filtrar_conta_uf(
-                entrada.get(), self.opcao_conta.get()
-            ),style="Botao.TButton"
-        )
-        botao.pack()
-
-        self.botoes_enviar_voltar(self.frame_conta_uf, entrada=None)
->>>>>>> fdae265cdae596252f3579b61424d4bd78e623dc
 
     # Cria uma interface gráfica que permite ao usuário visualizar e abrir relatórios disponíveis
     def criar_janela_reports(self):
