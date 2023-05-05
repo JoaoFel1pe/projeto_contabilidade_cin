@@ -72,7 +72,7 @@ class Reports:
 
         botao_municipio = ttk.Button(
             self.frame_menu,
-            text="Filtrar por Conta",
+            text="Filtrar por Município",
             command=self.criar_janela_municipio,
         style='Botao.TButton')
         botao_municipio.pack()
