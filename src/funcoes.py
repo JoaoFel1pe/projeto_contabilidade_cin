@@ -5,7 +5,7 @@ import pandas as pd
 # Constantes
 CAMINHO_DADOS = "data/dataframe_tratado.xlsx"
 COLUNAS = [
-    "INSTITUIÇÃO",
+    "DESPESAS",
     "SEGURANÇA PÚBLICA",
     "ASSISTÊNCIA SOCIAL",
     "PREVIDÊNCIA SOCIAL",
@@ -22,6 +22,7 @@ CONTAS = [
 ]
 
 CONTAS_SUB = [
+    
     "06 - SEGURANÇA PÚBLICA",
     "08 - ASSISTÊNCIA SOCIAL",
     "09 - PREVIDÊNCIA SOCIAL",
@@ -35,13 +36,32 @@ CONTAS_SUB = [
     "12 - EDUCAÇÃO",
 ]
 DESPESAS = [
-    "INSTITUIÇÃO",
     "DESPESAS EMPENHADAS",
     "DESPESAS LIQUIDADAS",
     "DESPESAS PAGAS",
     "INSCRIÇÃO DE RESTOS A PAGAR NÃO PROCESSADOS",
     "INSCRIÇÃO DE RESTOS A PAGAR PROCESSADOS",
 ]
+
+linhas = [
+    ["DESPESAS EMPENHADAS", 0, 0, 0, 0, 0, 0],
+    ["DESPESAS LIQUIDADAS", 0, 0, 0, 0, 0, 0],
+    ["DESPESAS PAGAS", 0, 0, 0, 0, 0, 0],
+    ["INSCRIÇÃO DE RESTOS A PAGAR NÃO PROCESSADOS", 0, 0, 0, 0, 0, 0],
+    ["INSCRIÇÃO DE RESTOS A PAGAR PROCESSADOS", 0, 0, 0, 0, 0, 0]
+]
+
+# lista de nomes de colunas
+colunas = [
+    "DESPESAS",
+    "SEGURANÇA PÚBLICA",
+    "ASSISTÊNCIA SOCIAL",
+    "PREVIDÊNCIA SOCIAL",
+    "SAÚDE",
+    "EDUCAÇÃO",
+    "TOTAL"
+]
+
 
 # Define a localização para formatação de moeda
 locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8")
@@ -59,41 +79,32 @@ def criar_dataframe_por_uf(uf):
 
     # Agrupa os dados por instituição e função e soma os valores
     dados_agrupados = (
-        dados_filtrados.groupby(["INSTITUIÇÃO", "CONTA"])["VALOR"].sum().reset_index()
+        dados_filtrados.groupby(["DESPESAS", "CONTA"])["VALOR"].sum().reset_index()
     )
 
     # Agrupa os dados por instituição e calcula o total
     total_por_instituicao = (
-        dados_agrupados.groupby("INSTITUIÇÃO")["VALOR"].sum().reset_index()
+        dados_agrupados.groupby("DESPESAS")["VALOR"].sum().reset_index()
     )
-
+    
     # Cria um dataframe vazio com as colunas desejadas
     df = pd.DataFrame(columns=COLUNAS)
 
-    # Define a coluna de instituição como índice
-    df = df.set_index("INSTITUIÇÃO")
+    # definir a coluna "DESPESAS" como o índice
+    df.set_index("DESPESAS", inplace=True)
 
-    sub = 0
+
     # Preenche o dataframe com os valores calculados
     for index, row in dados_agrupados.iterrows():
-        instituicao = row["INSTITUIÇÃO"]
+        despesas = row["DESPESAS"]
         funcao = row["CONTA"]
         valor = row["VALOR"]
-        if funcao == "10 - SAÚDE":
-            sub = valor
         total = total_por_instituicao[
-            total_por_instituicao["INSTITUIÇÃO"] == instituicao
+            total_por_instituicao["DESPESAS"] == despesas
         ]["VALOR"].values[0]
-        df.loc[instituicao, funcao] = valor
-        df.loc[instituicao, "TOTAL"] = total - sub
+        df.loc[despesas, funcao] = valor
+        df.loc[despesas, "TOTAL"] = total
 
-    # Formata as células do dataframe como moeda
-    df = df.applymap(
-        lambda x: locale.currency(x, grouping=True)
-        if isinstance(x, (int, float))
-        else x
-    )
-    # Remove as colunas desnecessárias
     df = df.drop(
         columns=[
             "SEGURANÇA PÚBLICA",
@@ -103,58 +114,74 @@ def criar_dataframe_por_uf(uf):
             "EDUCAÇÃO",
         ]
     )
+    df.fillna(0, inplace=True)
+    df["TOTAL"] = df["TOTAL"] - df["10 - SAÚDE"]
+    df = df.applymap(
+        lambda x: locale.currency(x, grouping=True)
+        if isinstance(x, (int, float))
+        else x
+    )
+    # Remove as colunas desnecessárias
     return df
 
 
-def criar_dataframe_por_conta(uf, conta):
+def criar_dataframe_por_municipio(municipio):
     # Carrega os dados
     dados = pd.read_excel(CAMINHO_DADOS)
 
     # Filtra os dados por UF e funções
-    dados_filtrados = dados[(dados["UF"] == uf) & (dados["CONTA"] == conta)]
+    dados_filtrados = dados[(dados["INSTITUIÇÃO"] == municipio) & (dados["CONTA"].isin(CONTAS_SUB))]
 
     # Converte a coluna de valores para numérico
     dados_filtrados["VALOR"] = pd.to_numeric(dados_filtrados["VALOR"], errors="coerce")
 
     # Agrupa os dados por instituição e função e soma os valores
     dados_agrupados = (
-        dados_filtrados.groupby(["INSTITUIÇÃO", "DESPESAS"])["VALOR"]
-        .sum()
-        .reset_index()
+        dados_filtrados.groupby(["DESPESAS", "CONTA"])["VALOR"].sum().reset_index()
     )
 
     # Agrupa os dados por instituição e calcula o total
     total_por_instituicao = (
-        dados_agrupados.groupby("INSTITUIÇÃO")["VALOR"].sum().reset_index()
+        dados_agrupados.groupby("DESPESAS")["VALOR"].sum().reset_index()
     )
-
+    
     # Cria um dataframe vazio com as colunas desejadas
-    df = pd.DataFrame(columns=DESPESAS)
+    df = pd.DataFrame(columns=COLUNAS)
 
-    # Define a coluna de instituição como índice
-    df = df.set_index("INSTITUIÇÃO")
+    # definir a coluna "DESPESAS" como o índice
+    df.set_index("DESPESAS", inplace=True)
 
-    sub = 0
+
     # Preenche o dataframe com os valores calculados
     for index, row in dados_agrupados.iterrows():
-        instituicao = row["INSTITUIÇÃO"]
         despesas = row["DESPESAS"]
+        funcao = row["CONTA"]
         valor = row["VALOR"]
         total = total_por_instituicao[
-            total_por_instituicao["INSTITUIÇÃO"] == instituicao
+            total_por_instituicao["DESPESAS"] == despesas
         ]["VALOR"].values[0]
-        df.loc[instituicao, despesas] = valor
-        df.loc[instituicao, "TOTAL"] = total - sub
+        df.loc[despesas, funcao] = valor
+        df.loc[despesas, "TOTAL"] = total
 
-    # Formata as células do dataframe como moeda
+    df = df.drop(
+        columns=[
+            "SEGURANÇA PÚBLICA",
+            "ASSISTÊNCIA SOCIAL",
+            "PREVIDÊNCIA SOCIAL",
+            "SAÚDE",
+            "EDUCAÇÃO",
+        ]
+    )
+    df.fillna(0, inplace=True)
+    df["TOTAL"] = df["TOTAL"] - df["10 - SAÚDE"]
     df = df.applymap(
         lambda x: locale.currency(x, grouping=True)
         if isinstance(x, (int, float))
         else x
     )
-
+    # Remove as colunas desnecessárias
     return df
 
 
 if __name__ == "__main__":
-    criar_dataframe_por_conta("SP", "10 - SAÚDE")
+    criar_dataframe_por_municipio("PREFEITURA MUNICIPAL DE ABADIA DE GOIÁS - GO")
